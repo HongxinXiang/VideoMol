@@ -50,35 +50,34 @@ We use RDKiT[<sup>1</sup>](#ref1) to generate a 3D conformation for each molecul
 
 ```python
 def generate_3d_comformer(smiles, sdf_save_path, mmffVariant="MMFF94", randomSeed=0, maxIters=5000, increment=2, optim_count=10, save_force=False):
-count = 0
-while count < optim_count:
-    try:
-        m = Chem.MolFromSmiles(smiles)
-        m3d = Chem.AddHs(m)
-        if save_force:
-            try:
+    count = 0
+    while count < optim_count:
+        try:
+            m = Chem.MolFromSmiles(smiles)
+            m3d = Chem.AddHs(m)
+            if save_force:
+                try:
+                    AllChem.EmbedMolecule(m3d, randomSeed=randomSeed)
+                    res = AllChem.MMFFOptimizeMolecule(m3d, mmffVariant=mmffVariant, maxIters=maxIters)
+                    m3d = Chem.RemoveHs(m3d)
+                except:
+                    m3d = Chem.RemoveHs(m3d)
+                    print("forcing saving molecule which can't be optimized ...")
+                    mol2sdf(m3d, sdf_save_path)
+            else:
                 AllChem.EmbedMolecule(m3d, randomSeed=randomSeed)
                 res = AllChem.MMFFOptimizeMolecule(m3d, mmffVariant=mmffVariant, maxIters=maxIters)
                 m3d = Chem.RemoveHs(m3d)
-            except:
-                m3d = Chem.RemoveHs(m3d)
-                print("forcing saving molecule which can't be optimized ...")
-                mol2sdf(m3d, sdf_save_path)
-                return False
-        else:
-            AllChem.EmbedMolecule(m3d, randomSeed=randomSeed)
-            res = AllChem.MMFFOptimizeMolecule(m3d, mmffVariant=mmffVariant, maxIters=maxIters)
-            m3d = Chem.RemoveHs(m3d)
-    except Exception as e:
-        traceback.print_exc()
-    if res == 1:
-        maxIters = maxIters * increment
-        count += 1
-        continue
-    mol2sdf(m3d, sdf_save_path)
-if save_force:
-    print("forcing saving molecule without convergence ...")
-    mol2sdf(m3d, sdf_save_path)
+        except Exception as e:
+            traceback.print_exc()
+        if res == 1:
+            maxIters = maxIters * increment
+            count += 1
+            continue
+        mol2sdf(m3d, sdf_save_path)
+    if save_force:
+        print("forcing saving molecule without convergence ...")
+        mol2sdf(m3d, sdf_save_path)
 ```
 
 </details>
@@ -96,8 +95,8 @@ Here is the PyMOL script to get the molecular frame, you can run it in the PyMOL
 
 ```bash
 sdf_filepath=demo.sdf
-rotate_direction=x
-rotate=30
+rotate_direction=x  # x,y,z
+rotate=30  # any angle from 0~360
 save_img_path=demo_frame.png
 load $sdf_filepath;bg_color white;hide (hydro);set stick_ball,on;set stick_ball_ratio,3.5;set stick_radius,0.15;set sphere_scale,0.2;set valence,1;set valence_mode,0;set valence_size, 0.1;rotate $rotate_direction, $rotate;save $save_img_path;quit;
 ```
