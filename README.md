@@ -47,6 +47,7 @@ We use RDKiT[<sup>1</sup>](#ref1) to generate a 3D conformation for each molecul
 
 <details>
   <summary>Click here for the code!</summary>
+
 ```python
 def generate_3d_comformer(smiles, sdf_save_path, mmffVariant="MMFF94", randomSeed=0, maxIters=5000, increment=2, optim_count=10, save_force=False):
 count = 0
@@ -79,6 +80,7 @@ if save_force:
     print("forcing saving molecule without convergence ...")
     mol2sdf(m3d, sdf_save_path)
 ```
+
 </details>
 
 
@@ -91,6 +93,7 @@ Here is the PyMOL script to get the molecular frame, you can run it in the PyMOL
 
 <details>
 <summary>Click here for the code!</summary>
+
 ```bash
 sdf_filepath=demo.sdf
 rotate_direction=x
@@ -98,6 +101,7 @@ rotate=30
 save_img_path=demo_frame.png
 load $sdf_filepath;bg_color white;hide (hydro);set stick_ball,on;set stick_ball_ratio,3.5;set stick_radius,0.15;set sphere_scale,0.2;set valence,1;set valence_mode,0;set valence_size, 0.1;rotate $rotate_direction, $rotate;save $save_img_path;quit;
 ```
+
 </details>
 
 
@@ -212,3 +216,4 @@ python --dataroot ../datasets/fine-tuning/KinomeScan/ --dataset BTK --epochs 10
 <div id="ref2">[2] DeLano W L. Pymol: An open-source molecular graphics tool[J]. CCP4 Newsl. Protein Crystallogr, 2002, 40(1): 82-92.</div>
 
 <div id="ref3">[3] Hu W, Fey M, Ren H, et al. Ogb-lsc: A large-scale challenge for machine learning on graphs[J]. arXiv preprint arXiv:2103.09430, 2021.</div>
+
