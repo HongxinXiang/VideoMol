@@ -39,11 +39,76 @@ pip install pandas
 
 
 
+## Data processing
+
+### 1. Generating 3D conformation for your data
+
+We use RDKiT[<sup>1</sup>](#ref1) to generate a 3D conformation for each molecule if the molecules do not have a conformation. Here is the code snippet to generate the 3D conformation:
+
+<details>
+  <summary>Click here for the code!</summary>
+```python
+def generate_3d_comformer(smiles, sdf_save_path, mmffVariant="MMFF94", randomSeed=0, maxIters=5000, increment=2, optim_count=10, save_force=False):
+count = 0
+while count < optim_count:
+    try:
+        m = Chem.MolFromSmiles(smiles)
+        m3d = Chem.AddHs(m)
+        if save_force:
+            try:
+                AllChem.EmbedMolecule(m3d, randomSeed=randomSeed)
+                res = AllChem.MMFFOptimizeMolecule(m3d, mmffVariant=mmffVariant, maxIters=maxIters)
+                m3d = Chem.RemoveHs(m3d)
+            except:
+                m3d = Chem.RemoveHs(m3d)
+                print("forcing saving molecule which can't be optimized ...")
+                mol2sdf(m3d, sdf_save_path)
+                return False
+        else:
+            AllChem.EmbedMolecule(m3d, randomSeed=randomSeed)
+            res = AllChem.MMFFOptimizeMolecule(m3d, mmffVariant=mmffVariant, maxIters=maxIters)
+            m3d = Chem.RemoveHs(m3d)
+    except Exception as e:
+        traceback.print_exc()
+    if res == 1:
+        maxIters = maxIters * increment
+        count += 1
+        continue
+    mol2sdf(m3d, sdf_save_path)
+if save_force:
+    print("forcing saving molecule without convergence ...")
+    mol2sdf(m3d, sdf_save_path)
+```
+</details>
+
+
+
+### 2. Rendering molecular video
+
+We use PyMOL[<sup>2</sup>](#ref2) to render each frame of molecular video, which is a user-sponsored molecular visualization system on an open-source foundation, maintained and distributed by Schrödinger. You can get it for free from [the link](https://pymol.org/2/).
+
+Here is the PyMOL script to get the molecular frame, you can run it in the PyMOL command:
+
+<details>
+<summary>Click here for the code!</summary>
+```bash
+sdf_filepath=demo.sdf
+rotate_direction=x
+rotate=30
+save_img_path=demo_frame.png
+load $sdf_filepath;bg_color white;hide (hydro);set stick_ball,on;set stick_ball_ratio,3.5;set stick_radius,0.15;set sphere_scale,0.2;set valence,1;set valence_mode,0;set valence_size, 0.1;rotate $rotate_direction, $rotate;save $save_img_path;quit;
+```
+</details>
+
+
+
 ## Pre-training
 
 #### 1. Preparing dataset for pre-training
 
-You can download provided [pretraining data](https://drive.google.com/file/d/1RkzYcJUQUtp5sqQis-mQvzurSznLkh2N/view?usp=sharing) and push it into the folder `datasets/pre-training/`.
+You can download provided [pretraining data](https://drive.google.com/file/d/1RkzYcJUQUtp5sqQis-mQvzurSznLkh2N/view?usp=sharing) and push it into the folder `datasets/pre-training/`. 
+
+Note that larger pre-training data means more storage space is required. You have free access to all pre-trained datasets in [PCQM4Mv2](https://ogb.stanford.edu/docs/lsc/pcqm4mv2/)[<sup>3</sup>](#ref3), of which we use the first 2 million molecules.
 
 
 
@@ -107,7 +172,7 @@ Download [pre-trained model](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxor
 
 #### 2. preparing downstream datasets
 
-Download [GPCRs](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) datasets and push them into the folder `datasets/fine-tuning/`
+Download [downstream datasets](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) and push them into the folder `datasets/fine-tuning/`
 
 
 
@@ -142,5 +207,8 @@ python --dataroot ../datasets/fine-tuning/KinomeScan/ --dataset BTK --epochs 10
 
 # Reference
 
+<div id="ref1">[1] Landrum G. RDKit: A software suite for cheminformatics, computational chemistry, and predictive modeling[J]. Greg Landrum, 2013, 8: 31.</div>
 
+<div id="ref2">[2] DeLano W L. Pymol: An open-source molecular graphics tool[J]. CCP4 Newsl. Protein Crystallogr, 2002, 40(1): 82-92.</div>
 
+<div id="ref3">[3] Hu W, Fey M, Ren H, et al. Ogb-lsc: A large-scale challenge for machine learning on graphs[J]. arXiv preprint arXiv:2103.09430, 2021.</div>
