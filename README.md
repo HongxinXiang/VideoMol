@@ -177,11 +177,12 @@ Download [pre-trained model](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxor
 
 The downstream datasets can be accessed in following table:
 
-| Name                          | Download link                                                | Description            |
-| ----------------------------- | ------------------------------------------------------------ | ---------------------- |
-| KinomeScan.zip                | [GoogleDrive](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) | 10 kinase datasets     |
-| kinases.zip                   | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRhTW7aoX_ecTFLt?e=Ab7WyI) | 10 GPCR datasets       |
-| SARS-CoV-2_REDIAL-2020.tar.gz | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ) | 11 SARS-CoV-2 datasets |
+| Name                          | Download link                                                | Description                   |
+| ----------------------------- | ------------------------------------------------------------ | ----------------------------- |
+| KinomeScan.zip                | [GoogleDrive](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) | 10 kinase datasets            |
+| kinases.zip                   | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRhTW7aoX_ecTFLt?e=Ab7WyI) | 10 GPCR datasets              |
+| SARS-CoV-2_REDIAL-2020.tar.gz | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ) | 11 SARS-CoV-2 datasets        |
+| MPP                           | [OneDrive](https://1drv.ms/f/s!Atau0ecyBQNTgRrf1iE-eogd17M-?e=m7so1Q) | Molecular property prediction |
 
 Please download all data listed above and push them into the folder `datasets/fine-tuning/`
 
@@ -213,6 +214,18 @@ For examples:
 ```bash
 python --dataroot ../datasets/fine-tuning/KinomeScan/ --dataset BTK --epochs 10
 ```
+
+
+
+## Reproducing our results
+
+1.  Download the dataset from the "preparing downstream datasets" section.
+
+2.  Click [this link](https://github.com/HongxinXiang/VideoMol/scripts) to view the reproducibility guide.
+
+
+
+The code for other comparison methods can be accessed through [this link](https://1drv.ms/f/s!Atau0ecyBQNTgTd736-8RPWEXSVt?e=DkOyw2).
 
 
 
