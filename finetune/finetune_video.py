@@ -1,5 +1,3 @@
-import sys
-sys.path.append("/home/xianghongxin/work/videomol/")
 import os
 from argparse import ArgumentParser
 import torch
@@ -7,7 +5,7 @@ import torch.nn as nn
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 from utils.public_utils import fix_train_random_seed, setup_device, cal_torch_model_params, get_tqdm_desc, is_left_better_right
-from dataloader.data_utils import simple_transforms_for_train, transforms_for_eval, load_video_data_list, load_multi_view_split_file, simple_transforms_no_aug
+from dataloader.data_utils import simple_transforms_for_train, aug2_transforms_for_train, transforms_for_eval, load_video_data_list, load_multi_view_split_file, simple_transforms_no_aug
 from finetune.train_utils import get_scaffold_regression_metainfo
 from dataloader.dataset import FrameDataset
 from finetune.train_utils import train_one_epoch, save_finetune_ckpt
@@ -53,6 +51,7 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default="vit_small_patch16_224", help='model name')
     parser.add_argument('--n_frame', type=int, default=60, help='the number of frame')
     parser.add_argument('--close_image_aug', action='store_true', default=False, help='whether to close data augmentation')
+    parser.add_argument('--image_aug_name', type=str, default="simple", choices=["simple", "aug2"], help='whether to close data augmentation')
     parser.add_argument('--task_type', type=str, default="classification", choices=["classification", "regression"], help='task type')
     parser.add_argument('--save_finetune_ckpt', type=int, default=1, choices=[0, 1], help='1 represents saving best ckpt, 0 represents no saving best ckpt')
 
@@ -114,7 +113,11 @@ def main(args):
         train_transforms = simple_transforms_no_aug(mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
         eval_transforms = simple_transforms_no_aug(mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
     else:
-        train_transforms = simple_transforms_for_train(resize=args.imageSize, mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
+        if args.image_aug_name == "simple":
+            train_transforms = simple_transforms_for_train(resize=args.imageSize, mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
+        elif args.image_aug_name == "aug2":
+            train_transforms = aug2_transforms_for_train(resize=args.imageSize, mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
+
         eval_transforms = transforms_for_eval(resize=(args.imageSize, args.imageSize),
                                               img_size=(args.imageSize, args.imageSize),
                                               mean_std=(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))

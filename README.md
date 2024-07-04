@@ -221,7 +221,7 @@ python --dataroot ../datasets/fine-tuning/KinomeScan/ --dataset BTK --epochs 10
 
 1.  Download the dataset from the "preparing downstream datasets" section.
 
-2.  Click [this link](https://github.com/HongxinXiang/VideoMol/scripts) to view the reproducibility guide.
+2.  Click [this link](https://github.com/HongxinXiang/VideoMol/tree/master/scripts) to view the reproducibility guide.
 
 
 

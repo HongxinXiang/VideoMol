@@ -36,7 +36,7 @@ please downloaded [MPP](https://1drv.ms/f/s!Atau0ecyBQNTgRrf1iE-eogd17M-?e=m7so1
 
 # SARS-CoV-2
 
-please downloaded `SARS-CoV-2_REDIAL-2020.tar.gz`
+please downloaded [SARS-CoV-2_REDIAL-2020.tar.gz](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ)
 
 ```bash
 ./SARS.bash
@@ -44,3 +44,6 @@ please downloaded `SARS-CoV-2_REDIAL-2020.tar.gz`
 
 
 
+
+
+**Notes:** In order to speed up your reproduction, we also provide training logs or trained models. Please click [the link](https://1drv.ms/f/s!Atau0ecyBQNTgjWBN2smwu8rfk1y?e=oisTeO)
