@@ -59,8 +59,6 @@ def parse_args():
     parser.add_argument('--n_frame', type=int, default=60, help='the number of frame')
     parser.add_argument('--close_image_aug', action='store_true', default=False,
                         help='whether to use data augmentation')
-    parser.add_argument('--normalize_training_data', action='store_true', default=False,
-                        help='whether to use data augmentation')
     parser.add_argument('--task_type', type=str, default="classification", choices=["classification", "regression"],
                         help='task type')
     parser.add_argument('--save_finetune_ckpt', type=int, default=1, choices=[0, 1],
@@ -178,7 +176,7 @@ def main(args):
 
     filenames = [f"{item}.png" for item in range(60)]
     if args.dataset in ["hiv", "qm8", "qm9"]:
-        filenames = filenames[::12]  # 数据太多了，用 5 个视角
+        filenames = filenames[::12]
         print("use args.n_frame=5")
         args.n_frame = 5
 
@@ -232,13 +230,6 @@ def main(args):
         val_idx], video_labels[val_idx]
     test_video_index_list, test_video_path_list, test_video_labels = video_index_list[test_idx], video_path_list[
         test_idx], video_labels[test_idx]
-
-    inverse_scale_mean_std = None
-    if args.normalize_training_data:
-        if stat_mean is not None and stat_std is not None:
-            print("transforming train data ...")
-            inverse_scale_mean_std = (stat_mean, stat_std)
-            train_video_labels = (train_video_labels - stat_mean) / stat_std
 
     train_frameDataset = FrameDataset(train_video_path_list, video_labels=train_video_labels,
                                       video_indexs=train_video_index_list, transforms=train_transforms,
@@ -374,7 +365,6 @@ def main(args):
                                                                                    device=device,
                                                                                    n_frame=args.n_frame,
                                                                                    task_type=args.task_type,
-                                                                                   inverse_scale_mean_std=inverse_scale_mean_std,
                                                                                    return_data_dict=True,
                                                                                    tqdm_desc=tqdm_eval_train_desc)
                 val_loss, val_results, val_data_dict = evaluate_on_video(model=videoMol,
