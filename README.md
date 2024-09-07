@@ -342,7 +342,7 @@ python finetune_video_step.py --dataroot ./datasets/mpp-video --dataset hiv --sp
 
 ## Docking Guidance
 
-We have described the details of docking in [this tutorial](https://github.com/HongxinXiang/VideoMol/tree/master/scripts/tutorial/docking_guidance), and you can complete docking easily step by step.
+We have described the details of docking in [this tutorial](https://github.com/HongxinXiang/VideoMol/tree/master/tutorial/docking_guidance), and you can complete docking easily step by step.
 
 
 
