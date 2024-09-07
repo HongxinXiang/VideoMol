@@ -1,49 +1,18 @@
-# KinomeScan
+# Reproduction Guide
 
-please downloaded [KinomeScan.zip](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing)
+Please download the [datasets](https://github.com/HongxinXiang/VideoMol/tree/master?tab=readme-ov-file#2-preparing-downstream-datasets) first.
 
-```bash
-./kinomeScan.bash
-```
+To speed up your reproduction, we provided the following:
 
+1. Reproduction commands;
+2. Training logs or trained checkpoints. 
 
+| Tasks                         | Desc                                                                                                                                                                       |
+|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GPCRs                         | [[Commands](https://github.com/HongxinXiang/VideoMol/blob/master/scripts/GPCRs.bash)] [[Logs/Checkpoints](https://1drv.ms/u/s!Atau0ecyBQNTg3wKAY68TUWpOphF?e=7RmDiM)]      |
+| molecular property prediction | [[Commands](https://github.com/HongxinXiang/VideoMol/blob/master/scripts/mpp.bash)] [[Logs/Checkpoints](https://1drv.ms/u/s!Atau0ecyBQNTg36pG0P72fkhZzn2?e=Sdrpym)]        |
+| SARS-CoV-2                    | [[Commands](https://github.com/HongxinXiang/VideoMol/blob/master/scripts/SARS.bash)] [[Logs/Checkpoints](https://1drv.ms/u/s!Atau0ecyBQNTg31myijlxb1kdo_i?e=m7Rsmf)]       |
+| KinomeScan                    | [[Commands](https://github.com/HongxinXiang/VideoMol/blob/master/scripts/kinomeScan.bash)] [[Logs/Checkpoints](https://1drv.ms/u/s!Atau0ecyBQNTg3v66Q1X-OH-h_wS?e=KwRGAU)] |
+| Virtual Screening             | [[Logs/Checkpoints](https://1drv.ms/f/s!Atau0ecyBQNThk14Kbe69sGu2WMD?e=CutIOO)]                                                                                            |
 
-
-
-# kinases
-
-please downloaded [kinases.zip](https://1drv.ms/u/s!Atau0ecyBQNTgRhTW7aoX_ecTFLt?e=Ab7WyI)
-
-```bash
-./kinases.bash
-```
-
-
-
-
-
-# molecular property prediction
-
-please downloaded [MPP](https://1drv.ms/f/s!Atau0ecyBQNTgRrf1iE-eogd17M-?e=m7so1Q)
-
-```bash
-./mpp.bash
-```
-
-
-
-
-
-# SARS-CoV-2
-
-please downloaded [SARS-CoV-2_REDIAL-2020.tar.gz](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ)
-
-```bash
-./SARS.bash
-```
-
-
-
-
-
-**Notes:** In order to speed up your reproduction, we also provide training logs or trained models. Please click [the link](https://1drv.ms/f/s!Atau0ecyBQNTgjWBN2smwu8rfk1y?e=oisTeO)
+We hope that the checkpoints we provide can help you accelerate virtual drug screening.

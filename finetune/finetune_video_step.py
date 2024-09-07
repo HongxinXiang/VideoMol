@@ -195,7 +195,7 @@ def main(args):
 
     # split train/valid/test
     if args.split == "split_file":
-        train_idx, val_idx, test_idx = split_train_val_test_idx_split_file(sort=True, split_path=args.split_path)
+        train_idx, val_idx, test_idx = split_train_val_test_idx_split_file(sort=False, split_path=args.split_path)
     elif args.split == "random":
         train_idx, val_idx, test_idx = split_train_val_test_idx(list(range(0, num_videos)), frac_train=0.8,
                                                                 frac_valid=0.1, frac_test=0.1, seed=args.seed)

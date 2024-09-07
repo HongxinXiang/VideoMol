@@ -1,6 +1,8 @@
 # VideoMol
 
-Prediction of drug targets and properties using a molecular video-derived foundation model
+**Official PyTorch-based implementation of Paper "A Molecular Video-derived Foundation Model for Scientific Drug Discovery"**
+
+![](./assets/framework.png)
 
 
 
@@ -9,6 +11,28 @@ Prediction of drug targets and properties using a molecular video-derived founda
 **[2023/11/05]** Repository installation completed.
 
 
+
+## What is Molecular Video?
+
+Author Note: Molecules are constantly moving in nature and video is a natural way to describe dynamic scenes. This was our initial idea when exploring Video. It is the most natural idea to build a video of molecular conformational changes, but we did not do so. One of the reasons is that molecular dynamics simulations rely on a lot of computing resources. For this reason, we took another approach to represent the conformation of a single molecule as a video and construct pre-training tasks from the perspective of video understanding. This can enhance the representation of molecules while having good scalability (can be easily extended to dynamics simulation data in the future).
+
+Having said so much, the video constructed by VideoMol is as follows:
+
+<details>
+  <summary>Click here to watch the molecular video!</summary>
+
+| <img src="./assets/demo/video/1.gif" alt="" style="width: 224px;height: 224px;"> | <img src="./assets/demo/video/10.gif" alt="" style="width: 224px;height: 224px;"> | <img src="./assets/demo/video/100.gif" alt="" style="width: 224px;height: 224px;"> | <img src="./assets/demo/video/1000.gif" alt="" style="width: 224px;height: 224px;"> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+</details>
+
+When the model is inferring, it obtains prediction results by scanning all frames.
+
+<details>
+  <summary>Click here to watch the inference!</summary>
+
+  <img src="./assets/demo/gradcam/run_cam_for_classification_10_0.6.gif" alt="" style="width: 224px;height: 224px;">
+
+</details>
 
 ## Environments
 
@@ -41,7 +65,7 @@ pip install pandas
 
 ## Data processing
 
-### 1. Generating 3D conformation for your data
+#### 1. Generating 3D conformation for your data
 
 We use RDKiT[<sup>1</sup>](#ref1) to generate a 3D conformation for each molecule if the molecules do not have a conformation. Here is the code snippet to generate the 3D conformation:
 
@@ -84,7 +108,7 @@ def generate_3d_comformer(smiles, sdf_save_path, mmffVariant="MMFF94", randomSee
 
 
 
-### 2. Rendering molecular video
+#### 2. Rendering molecular video
 
 We use PyMOL[<sup>2</sup>](#ref2) to render each frame of molecular video, which is a user-sponsored molecular visualization system on an open-source foundation, maintained and distributed by Schrödinger. You can get it for free from [the link](https://pymol.org/2/).
 
@@ -99,6 +123,45 @@ rotate_direction=x  # x,y,z
 rotate=30  # any angle from 0~360
 save_img_path=demo_frame.png
 load $sdf_filepath;bg_color white;hide (hydro);set stick_ball,on;set stick_ball_ratio,3.5;set stick_radius,0.15;set sphere_scale,0.2;set valence,1;set valence_mode,0;set valence_size, 0.1;rotate $rotate_direction, $rotate;save $save_img_path;quit;
+```
+
+</details>
+
+With the above code, you will get frames with 640x480 pixels. 
+
+
+
+#### 3. Video post-processing
+
+For each frame of the video, run the following code to get a 224x224 pixel frame.
+
+<details>
+<summary>Click here for the code!</summary>
+
+
+```python
+def padding_white_and_resize(img_path, trt_path, new_h, new_w, resize_h, resize_w):
+    ImageFile.LOAD_TRUNCATED_IMAGES = True
+    if imghdr.what(img_path) == "png":
+        Image.open(img_path).convert("RGB").save(img_path)
+
+    img = cv2.imread(img_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    h, w, c = img.shape
+
+    new_img = np.ones(shape=(new_h, new_w, 3)) * 255
+
+    assert (new_w - w) % 2 == 0 and (new_h - h) % 2 == 0
+    left, right, top, bottom = (new_w - w) // 2, (new_w - w) // 2 + w, (new_h - h) // 2, (new_h - h) // 2 + h
+    new_img[top:bottom, left:right] = img
+	
+	new_img = Image.fromarray(new_img.astype(np.uint8))
+    out = new_img.resize((resize_h, resize_w), Image.ANTIALIAS)
+    out.save(trt_path)
+
+# run demo:
+padding_white_and_resize(img_path, trt_path, new_h=640, new_w=640, resize_h=640, resize_w=640)  # img_path is a 640x480 frame
 ```
 
 </details>
@@ -165,11 +228,15 @@ python pretrain_videomol.py \
 
 
 
-## Fine-tuning
+## 🔥Fine-tuning
 
 ####  1. preparing pretrained videomol
 
-Download [pre-trained model](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxornnXFp4DRJLW6ya/view?usp=sharing) and push it into the folder `ckpts/`
+We provide the pre-trained model below, please download it and put it in the `ckpts/` directory.
+
+| Model Name            | #Params  | Checkpoints                                                  |
+| --------------------- | -------- | ------------------------------------------------------------ |
+| vit_small_patch16_224 | 21.742 M | [GoogleDrive](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxornnXFp4DRJLW6ya/view?usp=sharing) |
 
 
 
@@ -177,12 +244,14 @@ Download [pre-trained model](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxor
 
 The downstream datasets can be accessed in following table:
 
-| Name                          | Download link                                                | Description                   |
-| ----------------------------- | ------------------------------------------------------------ | ----------------------------- |
-| KinomeScan.zip                | [GoogleDrive](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) | 10 kinase datasets            |
-| kinases.zip                   | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRhTW7aoX_ecTFLt?e=Ab7WyI) | 10 GPCR datasets              |
-| SARS-CoV-2_REDIAL-2020.tar.gz | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ) | 11 SARS-CoV-2 datasets        |
-| MPP                           | [OneDrive](https://1drv.ms/f/s!Atau0ecyBQNTgRrf1iE-eogd17M-?e=m7so1Q) | Molecular property prediction |
+| Name                          | Download link                                                | Description                          |
+| ----------------------------- | ------------------------------------------------------------ | ------------------------------------ |
+| GPCRs.zip                     | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRhTW7aoX_ecTFLt?e=Ab7WyI) (RGB format) | 10 GPCR datasets (5HT1A, 5HT2A, ...) |
+| MPP                           | [OneDrive](https://1drv.ms/f/s!Atau0ecyBQNTgRrf1iE-eogd17M-?e=m7so1Q) (BGR format) | Molecular property prediction        |
+| SARS-CoV-2_REDIAL-2020.tar.gz | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNTgRmtGGcJQpKBrU3o?e=idhTHJ) (RGB format) | 11 SARS-CoV-2 datasets               |
+| KinomeScan.zip                | [GoogleDrive](https://drive.google.com/file/d/1Q6yZEhB9ATNZxjZB9tR6zB_sm6B49aaM/view?usp=sharing) (RGB format) | 10 kinase datasets (BTK, EGFR, ...)  |
+| Virtual Screening             | [OneDrive](https://1drv.ms/f/s!Atau0ecyBQNThjv-yUyDdgRCKpDR?e=PrRjaD) (RGB format) | BACE1、COX-1、COX-2、EP4             |
+| DrugBank_Approved.tar.gz      | [OneDrive](https://1drv.ms/u/s!Atau0ecyBQNThjwFcDoYluXg5Dk9?e=lchCC8) (RGB format) | Approved molecules from DrugBank     |
 
 Please download all data listed above and push them into the folder `datasets/fine-tuning/`
 
@@ -190,7 +259,16 @@ Please download all data listed above and push them into the folder `datasets/fi
 
 #### 3. fine-tuning with pretrained videomol
 
-Usage:
+There are two modes for training VideoMol:
+
+- [finetune_video.py](https://github.com/HongxinXiang/VideoMol/blob/master/finetune/finetune_video.py)
+- [finetune_video_step.py](https://github.com/HongxinXiang/VideoMol/blob/master/finetune/finetune_video_step.py)
+
+The motivation for the two modes is that we found that we could achieve good performance on the some datasets (such as HIV) with only one epoch when training VideoMol with `finetune-video.py`. We speculated that training VideoMol would not require many epochs. Therefore, we further wrote `finetune_video_step.py` to support training with a small number of epochs.
+
+
+
+**Usage of finetune_video.py:**
 
 ```bash
 usage: finetune_video.py [-h] [--dataroot DATAROOT] [--dataset DATASET]
@@ -212,16 +290,59 @@ usage: finetune_video.py [-h] [--dataroot DATAROOT] [--dataset DATASET]
 For examples:
 
 ```bash
-python --dataroot ../datasets/fine-tuning/KinomeScan/ --dataset BTK --epochs 10
+# run on 5HT1A dataset
+python finetune-video.py --dataroot ./datasets --dataset 5HT1A --batch 8 --lr 5e-05 --epochs 30 --split balanced_scaffold --arch arch3 --resume ./resumes/videomol.pth --task_type regression --seed 0 --runseed 0
 ```
 
 
 
-## Reproducing our results
+**Usage of finetune_video_step.py:**
+
+```bash
+usage: finetune_video_step.py [-h] [--dataroot DATAROOT] [--dataset DATASET]
+                              [--label_column_name LABEL_COLUMN_NAME]
+                              [--video_dir_name VIDEO_DIR_NAME] [--gpu GPU]
+                              [--ngpu NGPU] [--workers WORKERS]
+                              [--warmup_rate WARMUP_RATE] [--lr LR]
+                              [--momentum MOMENTUM]
+                              [--weight-decay WEIGHT_DECAY] [--seed SEED]
+                              [--runseed RUNSEED]
+                              [--split {split_file,random,stratified,scaffold,random_scaffold,balanced_scaffold}]
+                              [--split_path SPLIT_PATH] [--epochs EPOCHS]
+                              [--start_epoch START_EPOCH] [--batch BATCH]
+                              [--resume RESUME]
+                              [--arch {arch1,arch2,arch3,arch4,arch5}]
+                              [--imageSize IMAGESIZE]
+                              [--model_name MODEL_NAME] [--n_frame N_FRAME]
+                              [--close_image_aug]
+                              [--task_type {classification,regression}]
+                              [--save_finetune_ckpt {0,1}]
+                              [--reg_mean_std {none,self}]
+                              [--eval_step EVAL_STEP] [--dropout DROPOUT]
+                              [--activation_fn {relu,gelu,tanh,softplus,linear}]
+                              [--log_dir LOG_DIR]
+```
+
+For examples:
+
+```bash
+# run on HIV
+python finetune_video_step.py --dataroot ./datasets/mpp-video --dataset hiv --split scaffold --resume ./resumes/videomol.pth --worker 2 --close_image_aug --runseed 0 --task_type classification --video_dir_name video-224x224 --arch arch4 --epochs 2 --batch 16 --lr 0.005 --dropout 0.5 --activation_fn gelu
+```
+
+
+
+## Reproducing Guidance
 
 1.  Download the dataset from the "preparing downstream datasets" section.
 
 2.  Click [this link](https://github.com/HongxinXiang/VideoMol/tree/master/scripts) to view the reproducibility guide.
+
+
+
+## Docking Guidance
+
+We have described the details of docking in [this tutorial](https://github.com/HongxinXiang/VideoMol/tree/master/scripts/tutorial/docking_guidance), and you can complete docking easily step by step.
 
 
 
@@ -230,6 +351,17 @@ The code for other comparison methods can be accessed through [this link](https:
 
 
 # Reference
+
+If you think our code or anything else has helped you, please don't hesitate to cite us:
+
+```bash
+```
+
+
+
+# Acknowledge
+
+We would like to thank you for the following useful tools or data:
 
 <div id="ref1">[1] Landrum G. RDKit: A software suite for cheminformatics, computational chemistry, and predictive modeling[J]. Greg Landrum, 2013, 8: 31.</div>
 
