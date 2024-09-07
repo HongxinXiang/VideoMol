@@ -345,12 +345,22 @@ Grid_Score: -52.468266
 We would like to thank the following tutorials for providing us with very useful assistance:
 
 DOCK6.9 Learning (IV): https://blog.csdn.net/Wanderers111/article/details/103828295
+
 DOCK6.9 Learning (V): https://blog.csdn.net/Wanderers111/article/details/104012626?spm=1001.2014.3001.5502
+
 DOCK6.9 Learning (VI): https://blog.csdn.net/Wanderers111/article/details/103968992?spm=1001.2014.3001.5502
+
 DOCK Tutorial-1: https://cloud.tencent.com/developer/article/1785373
+
 DOCK-2-Preparation of protein receptors and ligands: https://cloud.tencent.com/developer/article/1785374
+
 DOCK-3-Generate Spheres: https://cloud.tencent.com/developer/article/1785377
+
 DOCK-4-Generate Grid: https://cloud.tencent.com/developer/article/1785376
+
 DOCK-5-Docking: https://cloud.tencent.com/developer/article/1785375
+
 "Molecular Docking Tutorial" Protein/Nucleic Acid/Peptide-Small Molecule Docking (DOCK 6.9): https://baijiahao.baidu.com/s?id=1674141651219145929&wfr=spider&for=pc
+
 Talk about the mol2 file that records the chemical system structure: http://sobereva.com/655
+
