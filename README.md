@@ -161,7 +161,7 @@ def padding_white_and_resize(img_path, trt_path, new_h, new_w, resize_h, resize_
     out.save(trt_path)
 
 # run demo:
-padding_white_and_resize(img_path, trt_path, new_h=640, new_w=640, resize_h=640, resize_w=640)  # img_path is a 640x480 frame
+padding_white_and_resize(img_path, trt_path, new_h=640, new_w=640, resize_h=224, resize_w=224)  # img_path is a 640x480 frame. padding 640x480 to 640x640 and then resizing 640x640 to 224x224
 ```
 
 </details>
