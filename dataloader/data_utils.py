@@ -41,8 +41,8 @@ def aug2_transforms_for_train(resize=224, mean_std=None, p=0.2, rotation=False):
         mean, std = IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
     else:
         mean, std = mean_std[0], mean_std[1]
-    img_transforms = transforms.Compose([transforms.CenterCrop(resize), transforms.RandomHorizontalFlip(),
-                                         transforms.RandomGrayscale(p), transforms.RandomRotation(degrees=360),
+    img_transforms = transforms.Compose([transforms.CenterCrop(resize), transforms.RandomGrayscale(p),
+                                         transforms.RandomRotation(degrees=360), transforms.RandomHorizontalFlip(),
                                          transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
     return img_transforms
 
@@ -53,17 +53,6 @@ def simple_transforms_no_aug(mean_std=None):
     else:
         mean, std = mean_std[0], mean_std[1]
     img_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-    return img_transforms
-
-
-def imagemol_transforms_for_train(resize=224, mean_std=None, p=0.2, rotation=False):
-    if mean_std is None:
-        mean, std = IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-    else:
-        mean, std = mean_std[0], mean_std[1]
-    img_transforms = transforms.Compose([transforms.CenterCrop(resize), transforms.RandomHorizontalFlip(),
-                                         transforms.RandomGrayscale(p), transforms.RandomRotation(degrees=360),
-                                         transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
     return img_transforms
 
 

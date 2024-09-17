@@ -23,7 +23,7 @@ from utils.train_utils import load_smiles
 
 def parse_args():
     # Parse arguments
-    parser = ArgumentParser(description='PyTorch Implementation of VideoMol')
+    parser = ArgumentParser(description='PyTorch Implementation of VideoMol for Fine-Tuning with Step Mode')
 
     # basic
     parser.add_argument('--dataroot', type=str, default="../datasets/fine-tuning/", help='data root')
@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--video_dir_name', type=str, default="video-224x224", help='directory name of video')
     parser.add_argument('--gpu', type=str, default="0", help='GPUs of CUDA_VISIBLE_DEVICES, e.g. 0,1,2,3')
     parser.add_argument('--ngpu', type=int, default=8, help='number of GPUs to use')
-    parser.add_argument('--workers', default=2, type=int, help='number of data loading workers (default: 2)')
+    parser.add_argument('--workers', default=8, type=int, help='number of data loading workers (default: 8)')
 
     # optimizer
     parser.add_argument("--warmup_rate", type=float, default=1e-3, help="warmup rate")
@@ -42,7 +42,7 @@ def parse_args():
 
     # train
     parser.add_argument('--seed', type=int, default=42, help='random seed (default: 42) to split dataset')
-    parser.add_argument('--runseed', type=int, default=2021, help='random seed to run model (default: 2021)')
+    parser.add_argument('--runseed', type=int, default=2022, help='random seed to run model (default: 2022)')
     parser.add_argument('--split', default="random", type=str,
                         choices=['split_file', 'random', 'stratified', 'scaffold', 'random_scaffold',
                                  'balanced_scaffold'], help='regularization of classification loss')

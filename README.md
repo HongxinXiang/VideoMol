@@ -156,7 +156,7 @@ def padding_white_and_resize(img_path, trt_path, new_h, new_w, resize_h, resize_
     left, right, top, bottom = (new_w - w) // 2, (new_w - w) // 2 + w, (new_h - h) // 2, (new_h - h) // 2 + h
     new_img[top:bottom, left:right] = img
 	
-	new_img = Image.fromarray(new_img.astype(np.uint8))
+    new_img = Image.fromarray(new_img.astype(np.uint8))
     out = new_img.resize((resize_h, resize_w), Image.ANTIALIAS)
     out.save(trt_path)
 
@@ -327,7 +327,7 @@ For examples:
 
 ```bash
 # run on HIV
-python finetune_video_step.py --dataroot ./datasets/mpp-video --dataset hiv --split scaffold --resume ./resumes/videomol.pth --worker 2 --close_image_aug --runseed 0 --task_type classification --video_dir_name video-224x224 --arch arch4 --epochs 2 --batch 16 --lr 0.005 --dropout 0.5 --activation_fn gelu
+python finetune_video_step.py --dataroot ./datasets/mpp-video --dataset hiv --split scaffold --resume ./resumes/videomol.pth --close_image_aug --runseed 0 --task_type classification --video_dir_name video-224x224 --arch arch4 --epochs 2 --batch 16 --lr 0.005 --dropout 0.5 --activation_fn gelu
 ```
 
 
@@ -346,15 +346,34 @@ We have described the details of docking in [this tutorial](https://github.com/H
 
 
 
-The code for other comparison methods can be accessed through [this link](https://1drv.ms/f/s!Atau0ecyBQNTgTd736-8RPWEXSVt?e=DkOyw2).
+## Other Resources
+
+Other methods: [link](https://1drv.ms/f/s!Atau0ecyBQNTgTd736-8RPWEXSVt?e=DkOyw2)
 
 
 
 # Reference
 
-If you think our code or anything else has helped you, please don't hesitate to cite us:
+If you find our code or anything else helpful, please do not hesitate to cite the following relevant papers:
 
 ```bash
+TODO...
+
+
+@inproceedings{ijcai2024p675,
+  title     = {An Image-enhanced Molecular Graph Representation Learning Framework},
+  author    = {Xiang, Hongxin and Jin, Shuting and Xia, Jun and Zhou, Man and Wang, Jianmin and Zeng, Li and Zeng, Xiangxiang},
+  booktitle = {Proceedings of the Thirty-Third International Joint Conference on
+               Artificial Intelligence, {IJCAI-24}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},
+  editor    = {Kate Larson},
+  pages     = {6107--6115},
+  year      = {2024},
+  month     = {8},
+  note      = {Main Track},
+  doi       = {10.24963/ijcai.2024/675},
+  url       = {https://doi.org/10.24963/ijcai.2024/675},
+}
 ```
 
 
