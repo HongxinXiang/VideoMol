@@ -357,7 +357,7 @@ Other methods: [link](https://1drv.ms/f/s!Atau0ecyBQNTgTd736-8RPWEXSVt?e=DkOyw2)
 If you find our code or anything else helpful, please do not hesitate to cite the following relevant papers:
 
 ```bash
-TODO...
+TODO: add reference of VideoMol
 
 
 @inproceedings{ijcai2024p675,
