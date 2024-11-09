@@ -357,7 +357,21 @@ Other methods: [link](https://1drv.ms/f/s!Atau0ecyBQNTgTd736-8RPWEXSVt?e=DkOyw2)
 If you find our code or anything else helpful, please do not hesitate to cite the following relevant papers:
 
 ```bash
-TODO: add reference of VideoMol
+@article{Xiang2024,
+author={Xiang, Hongxin and Zeng, Li and Hou, Linlin and Li, Kenli and Fu, Zhimin and Qiu, Yunguang and Nussinov, Ruth and Hu, Jianying and Rosen-Zvi, Michal and Zeng, Xiangxiang and Cheng, Feixiong},
+title={A molecular video-derived foundation model for scientific drug discovery},
+journal={Nature Communications},
+year={2024},
+month={Nov},
+day={08},
+volume={15},
+number={1},
+pages={9696},
+publisher={Nature Publishing Group UK London},
+issn={2041-1723},
+doi={10.1038/s41467-024-53742-z},
+url={https://doi.org/10.1038/s41467-024-53742-z}
+}
 
 
 @inproceedings{ijcai2024p675,
