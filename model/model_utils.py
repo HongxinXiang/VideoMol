@@ -71,7 +71,7 @@ def save_checkpoint(model_dict, optimizer_dict, lr_scheduler_dict, desc, epoch, 
     log('model has been saved as {}'.format(filename))
 
 
-def load_checkpoint(pretrained_pth, frameMol, axisClassifier, rotationClassifier, angleClassifier, chemicalClassifier,
+def load_checkpoint(pretrained_pth, videoMol, axisClassifier, rotationClassifier, angleClassifier, chemicalClassifier,
                     optimizer=None, lr_scheduler=None, logger=None):
     log = logger.info if logger is not None else print
     flag = False
@@ -79,7 +79,7 @@ def load_checkpoint(pretrained_pth, frameMol, axisClassifier, rotationClassifier
     if os.path.isfile(pretrained_pth):
         pretrained_model = torch.load(pretrained_pth)
         resume_desc = pretrained_model["desc"]
-        model_list = [("frameMol", frameMol, "frame_model"), ("axisClassifier", axisClassifier, "axisClassifier"),
+        model_list = [("videoMol", videoMol, "videoMol"), ("axisClassifier", axisClassifier, "axisClassifier"),
                       ("rotationClassifier", rotationClassifier, "rotationClassifier"),
                       ("angleClassifier", angleClassifier, "angleClassifier"),
                       ("chemicalClassifier", chemicalClassifier, "chemicalClassifier")]

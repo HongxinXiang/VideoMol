@@ -259,7 +259,7 @@ def main(args):
 
     # Resume weights
     if args.resume is not None and args.resume != "None":
-        load_flag, resume_desc = load_pretrained_component(videoMol, args.resume, "frame_model", consistency=False,
+        load_flag, resume_desc = load_pretrained_component(videoMol, args.resume, "videomol", consistency=False,
                                                            logger=None)
         assert load_flag, "error in loading pretrained model {}.".format(args.resume)
         print("[resume description] {}".format(resume_desc))
@@ -267,7 +267,7 @@ def main(args):
     model_params_num = cal_torch_model_params(videoMol, unit="M")
     print(videoMol)
     print("videoMol: {}".format(model_params_num))
-
+    
     # Loss and optimizer
     optim_params = filter(lambda x: x.requires_grad, videoMol.parameters())
     optimizer = SGD(optim_params, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)

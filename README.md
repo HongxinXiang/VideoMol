@@ -236,7 +236,7 @@ We provide the pre-trained model below, please download it and put it in the `ck
 
 | Model Name | Backbone              | #Params  | Checkpoints                                                  |
 | ---------- | --------------------- | -------- | ------------------------------------------------------------ |
-| VideoMol   | vit_small_patch16_224 | 21.742 M | [GoogleDrive](https://drive.google.com/file/d/1TitrL3ed5Wko_xJxornnXFp4DRJLW6ya/view?usp=sharing) |
+| VideoMol   | vit_small_patch16_224 | 21.742 M | [GoogleDrive](https://drive.google.com/file/d/1_ivdtnX6j_JqpuebWVTccpay_timMZ5I/view?usp=sharing) |
 
 
 
